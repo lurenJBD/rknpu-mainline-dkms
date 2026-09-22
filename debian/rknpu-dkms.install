@@ -1,2 +1,3 @@
 Makefile usr/src/rknpu-0.9.8/
 src usr/src/rknpu-0.9.8/
+debian/rknpu.conf etc/modules-load.d/

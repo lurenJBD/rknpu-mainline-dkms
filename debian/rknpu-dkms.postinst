@@ -15,6 +15,12 @@ case "$1" in
             done
             rmmod rocket 2>/dev/null || true
         fi
+
+        # Automatically load rknpu module right after installation
+        if ! lsmod | grep -q '^rknpu\b'; then
+            echo "[RKNPU-DKMS] Automatically loading rknpu driver module..." >&2
+            modprobe rknpu || true
+        fi
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

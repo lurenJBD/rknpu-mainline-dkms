@@ -1,3 +1,11 @@
+rknpu (0.9.8-2) unstable; urgency=medium
+
+  * Implement submit fastpaths (zero-alloc sync args, IOMMU detach early exit, task token hot-cache).
+  * Add dynamic multi-core dispatch AUTO mask preservation and subcore_task scheduling.
+  * Performance release: MobileNet v1 peak 322.8 FPS, MatMul 11.2k ops/s.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Tue, 22 Sep 2026 16:15:00 +0800
+
 rknpu (0.9.8-1) unstable; urgency=medium
 
   * Initial release of mainline Rockchip RK3588 RKNPU DKMS driver package.
