@@ -1,0 +1,20 @@
+Source: rknpu
+Section: kernel
+Priority: optional
+Maintainer: lurenJBD <31967654+lurenJBD@users.noreply.github.com>
+Build-Depends: debhelper-compat (= 13), dh-dkms
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://github.com/lurenJBD/rk3588-rknn-core
+
+Package: rknpu-dkms
+Architecture: arm64
+Depends: dkms (>= 2.1.0.0), ${misc:Depends}
+Conflicts: rocket-dkms, rknpu-native-dkms
+Replaces: rknpu-native-dkms
+Description: DKMS source for the mainline Rockchip RK3588 RKNPU driver
+ This package provides the Rockchip RKNPU kernel module source
+ for use with DKMS on arm64 systems. It targets the mainline
+ rockchip,rk3588-rknn-core device tree node and supports 3-core
+ concurrency, 800 MHz devfreq, and large LLM model loading with
+ per-domain IOMMU isolation.

@@ -1,0 +1,3 @@
+[submodule "rk3588-rknn-core"]
+	path = rk3588-rknn-core
+	url = https://github.com/lurenJBD/rk3588-rknn-core.git

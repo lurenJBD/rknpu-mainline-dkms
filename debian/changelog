@@ -1,0 +1,10 @@
+rknpu (0.9.8-1) unstable; urgency=medium
+
+  * Initial release of mainline Rockchip RK3588 RKNPU DKMS driver package.
+  * Target mainline device tree compatible: rockchip,rk3588-rknn-core.
+  * 3-core NPU concurrency and dynamic devfreq OPP (200-800 MHz).
+  * IOMMU per-domain accounting and pool isolation supporting 4+ GiB LLM models.
+  * Native PC engine with PC_DMA_BASE=0 protocol.
+  * Non-blocking async submit and dma_fence integration.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Tue, 22 Sep 2026 13:30:00 +0800
