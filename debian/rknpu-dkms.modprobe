@@ -1,0 +1,3 @@
+# Blacklist in-tree 'rocket' driver to prevent device-binding collision
+# with RKNPU on rockchip,rk3588-rknn-core platform nodes.
+blacklist rocket

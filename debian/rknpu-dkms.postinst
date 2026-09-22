@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+        # Ensure rocket unbind if any residual devices are still bound
+        if [ -e "/sys/bus/platform/drivers/rocket" ]; then
+            for dev in fdab0000.npu fdac0000.npu fdad0000.npu; do
+                if [ -e "/sys/bus/platform/drivers/rocket/$dev" ]; then
+                    echo "[RKNPU-DKMS] Unbinding $dev from rocket driver..." >&2
+                    echo "$dev" > /sys/bus/platform/drivers/rocket/unbind 2>/dev/null || true
+                fi
+            done
+            rmmod rocket 2>/dev/null || true
+        fi
+        ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        ;;
+esac
+
+exit 0

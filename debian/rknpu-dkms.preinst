@@ -1,0 +1,74 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    install|upgrade)
+        # 1. Detect and resolve conflict with in-tree 'rocket' driver
+        if lsmod | grep -q '^rocket'; then
+            echo "====================================================================" >&2
+            echo "[RKNPU-DKMS] WARNING: In-tree 'rocket' driver is currently loaded!" >&2
+            echo "[RKNPU-DKMS] Both 'rocket' and 'rknpu' target the same NPU hardware" >&2
+            echo "[RKNPU-DKMS] (rockchip,rk3588-rknn-core) and cannot co-exist." >&2
+            echo "[RKNPU-DKMS] Attempting to unbind platform devices and unload 'rocket'..." >&2
+
+            for dev in fdab0000.npu fdac0000.npu fdad0000.npu; do
+                if [ -e "/sys/bus/platform/drivers/rocket/$dev" ]; then
+                    echo "$dev" > /sys/bus/platform/drivers/rocket/unbind 2>/dev/null || true
+                fi
+            done
+
+            if ! rmmod rocket 2>/dev/null; then
+                echo "[RKNPU-DKMS] NOTICE: Could not automatically unload 'rocket' (it may be in use)." >&2
+                echo "[RKNPU-DKMS] Please manually unload it ('sudo rmmod rocket') or reboot." >&2
+            else
+                echo "[RKNPU-DKMS] Successfully unloaded 'rocket'." >&2
+            fi
+            echo "====================================================================" >&2
+        fi
+
+        # 2. Detect any currently running rknpu / rknpu_native modules
+        if lsmod | grep -qE '^(rknpu|rknpu_native)'; then
+            LOADED_MOD=$(lsmod | grep -E '^(rknpu|rknpu_native)' | awk '{print $1}')
+            echo "====================================================================" >&2
+            echo "[RKNPU-DKMS] WARNING: Another NPU module '${LOADED_MOD}' is currently loaded!" >&2
+            echo "[RKNPU-DKMS] Attempting to cleanly unload '${LOADED_MOD}' before upgrade..." >&2
+            if ! rmmod "${LOADED_MOD}" 2>/dev/null; then
+                echo "[RKNPU-DKMS] NOTICE: '${LOADED_MOD}' is currently in use." >&2
+                echo "[RKNPU-DKMS] Please stop NPU processes and run 'sudo rmmod ${LOADED_MOD}'." >&2
+            else
+                echo "[RKNPU-DKMS] Successfully unloaded '${LOADED_MOD}'." >&2
+            fi
+            echo "====================================================================" >&2
+        fi
+
+        # 3. Detect any existing DKMS registrations for rknpu or rknpu-native
+        if command -v dkms >/dev/null 2>&1; then
+            EXISTING_DKMS=$(dkms status -m rknpu 2>/dev/null || true)
+            if [ -n "$EXISTING_DKMS" ]; then
+                echo "[RKNPU-DKMS] INFO: Existing DKMS registration found:" >&2
+                echo "$EXISTING_DKMS" >&2
+            fi
+            EXISTING_NATIVE_DKMS=$(dkms status -m rknpu-native 2>/dev/null || true)
+            if [ -n "$EXISTING_NATIVE_DKMS" ]; then
+                echo "[RKNPU-DKMS] INFO: Existing rknpu-native DKMS registration found:" >&2
+                echo "$EXISTING_NATIVE_DKMS" >&2
+            fi
+        fi
+
+        # 4. Check for pre-existing module binaries in the current kernel directory
+        KERNEL_VER=$(uname -r)
+        EXISTING_KO=$(find "/lib/modules/${KERNEL_VER}" \( -name "rknpu.ko*" -o -name "rknpu_native.ko*" \) 2>/dev/null || true)
+        if [ -n "$EXISTING_KO" ]; then
+            echo "[RKNPU-DKMS] INFO: Pre-existing NPU module binaries found in /lib/modules/${KERNEL_VER}:" >&2
+            echo "$EXISTING_KO" >&2
+        fi
+        ;;
+    abort-upgrade)
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
