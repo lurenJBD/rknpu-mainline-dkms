@@ -1,3 +1,20 @@
+rknpu (0.9.8-3) unstable; urgency=medium
+
+  * Support validated combined-mask dual/triple-core submits with common task
+    IOVA and per-core task ranges; retain deterministic single-core AUTO.
+  * Validate the official classification/detection/dynamic-shape/MatMul matrix,
+    ALL mask, sync/async output fences, and mindnano inference.
+  * Account NPU busy time per section completion so debugfs/rknpu/load reports
+    short-burst utilization instead of staying at 0%.
+  * Reset stale runtime PM state so RKNPU ioctls do not fail after unbinding the
+    in-tree rocket driver.
+  * Remove the per-file task-token fastpath that could dereference a recycled
+    GEM handle across rknn_matmul contexts.
+  * Validate populated subcore_task ranges instead of the top-level task sum for
+    large multi-core submits.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Fri, 25 Sep 2026 22:16:34 +0800
+
 rknpu (0.9.8-2) unstable; urgency=medium
 
   * Implement submit fastpaths (zero-alloc sync args, IOMMU detach early exit, task token hot-cache).
