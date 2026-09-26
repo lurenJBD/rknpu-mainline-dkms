@@ -34,7 +34,7 @@ cd rknpu-mainline-dkms
 make deb
 ```
 
-Upon successful build, the Debian package `rknpu-dkms_0.9.8-1_arm64.deb` will be generated in the repository root.
+Upon successful build, the Debian package `rknpu-dkms_0.9.8-3_arm64.deb` will be generated in the repository root.
 
 ---
 
@@ -43,7 +43,7 @@ Upon successful build, the Debian package `rknpu-dkms_0.9.8-1_arm64.deb` will be
 Install the generated `.deb` package using `dpkg`:
 
 ```bash
-sudo dpkg -i rknpu-dkms_0.9.8-1_arm64.deb
+sudo dpkg -i rknpu-dkms_0.9.8-3_arm64.deb
 ```
 
 DKMS will automatically trigger a build of the `rknpu` kernel module for your currently installed kernel and install it into `/lib/modules/$(uname -r)/updates/dkms/rknpu.ko`.
