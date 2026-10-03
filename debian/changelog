@@ -1,3 +1,13 @@
+rknpu (0.9.8-4) unstable; urgency=medium
+
+  * Tolerate librknnrt MEM_SYNC quirks: clamp over-range syncs to the object
+    extent, treat zero-length syncs as vacuous, and maintain caches for partial
+    syncs on driver-exported dma-bufs.
+  * Ship an on-board test suite and reorganize the documentation for
+    first-time users.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Sat, 03 Oct 2026 15:05:00 +0800
+
 rknpu (0.9.8-3) unstable; urgency=medium
 
   * Support validated combined-mask dual/triple-core submits with common task
