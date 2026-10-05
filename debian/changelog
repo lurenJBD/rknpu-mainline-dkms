@@ -1,3 +1,14 @@
+rknpu (0.9.8-5) unstable; urgency=medium
+
+  * Validate dma-buf exporters before dereferencing private GEM objects and
+    short-circuit empty-range memory sync requests (Closes: #6).
+  * Serialize watchdog timer publication under irq_lock and gate PC register
+    re-arm and IRQ acknowledge sequences against device reset (Closes: #7).
+  * Update reference platform performance scores and hardware verification
+    records.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Mon, 05 Oct 2026 15:48:00 +0800
+
 rknpu (0.9.8-4) unstable; urgency=medium
 
   * Tolerate librknnrt MEM_SYNC quirks: clamp over-range syncs to the object
