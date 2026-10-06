@@ -1,3 +1,17 @@
+rknpu (0.9.8-6) unstable; urgency=medium
+
+  * Reclaim idle closed per-FD IOMMU domain page tables (IDs 16-63) after
+    working sets drain, and provide iommu_domains debugfs inspection.
+  * Remove obsolete bypass_soft_reset module parameter and debugfs toggle
+    (Closes: #10).
+  * Defensive GEM cleanup: remove unused mmap wrappers, guard against
+    imported dma-buf mmap, and clean up dead allocation macros.
+  * Remove legacy CONFIG_ROCKCHIP_RKNPU_PROC_FS debugger code.
+  * Add test-suite runner and record Flash-Attention benchmark results for
+    rk-llama.cpp (Qwen3-0.6B) in documentation.
+
+ -- lurenJBD <31967654+lurenJBD@users.noreply.github.com>  Tue, 06 Oct 2026 17:05:00 +0800
+
 rknpu (0.9.8-5) unstable; urgency=medium
 
   * Validate dma-buf exporters before dereferencing private GEM objects and
